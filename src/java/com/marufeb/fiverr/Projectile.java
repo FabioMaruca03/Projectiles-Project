@@ -1,21 +1,53 @@
 package com.marufeb.fiverr;
 
-import java.util.Random;
-
 public class Projectile {
+    private final String name;
     private int velocity;
     private int angle;
     private int height;
+    private float x = 0 ;
+    private float timing = 0.5f;
+    private float currentTime = 0;
 
-    public Projectile(int velocity, int angle, int height) {
+    public Projectile(String name, int velocity, int angle, int height) {
+        this.name = name;
         setVelocity(velocity);
         setAngle(angle);
         setHeight(height);
     }
 
-    public boolean modeUntilHit() {
-        // todo: make movement, true if hits the ground
-        return true;
+    public boolean moveUntilHit(int ground) {
+        x = (float) (velocity * timing * Math.cos(Math.toRadians(angle)) + x);
+        height -= (int) (velocity * timing * Math.sin(Math.toRadians(angle)) - (0.5 * 9.81 * Math.pow(timing, 2)));
+        currentTime += timing;
+        return height <= ground;
+    }
+
+    public float distance(Projectile other) {
+        return Math.abs(other.x-getX());
+    }
+
+    //-----| GETTERS AND SETTERS |-----//
+
+
+    public float getCurrentTime() {
+        return currentTime;
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public float getTiming() {
+        return timing;
+    }
+
+    public void setTiming(float timing) {
+        this.timing = timing;
     }
 
     public int getVelocity() {
