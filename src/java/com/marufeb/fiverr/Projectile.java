@@ -17,14 +17,14 @@ public class Projectile {
     }
 
     public boolean moveUntilHit(int ground) {
-        x = (float) (velocity * timing * Math.cos(Math.toRadians(angle)) + x);
+        x += (float) (velocity * timing * Math.cos(Math.toRadians(angle)));
         height -= (int) (velocity * timing * Math.sin(Math.toRadians(angle)) - (0.5 * 9.81 * Math.pow(timing, 2)));
         currentTime += timing;
         return height <= ground;
     }
 
     public float distance(Projectile other) {
-        return Math.abs(other.x-getX());
+        return Math.abs(Math.max(other.getHitPoint(), getHitPoint()) - Math.min(other.getHitPoint(), getHitPoint()));
     }
 
     //-----| GETTERS AND SETTERS |-----//
@@ -32,6 +32,10 @@ public class Projectile {
 
     public float getCurrentTime() {
         return currentTime;
+    }
+
+    public float getHitPoint() {
+        return (float) (velocity * (2 * velocity * Math.sin(Math.toRadians(angle)))/9.81 * Math.cos(Math.toRadians(angle)));
     }
 
     public float getX() {

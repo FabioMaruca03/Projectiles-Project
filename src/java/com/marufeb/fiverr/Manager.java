@@ -36,7 +36,9 @@ public class Manager {
 
             } while (!projectiles[i].moveUntilHit(ground));
 
+
         }
+        System.out.println("Distance between projectiles: "+projectiles[0].distance(projectiles[1]));
 
     }
 
