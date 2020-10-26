@@ -1,26 +1,29 @@
 package com.marufeb.fiverr;
 
-public class Projectile {
+public abstract class Projectile {
     private final String name;
-    private int velocity;
+    private float velocity;
     private int angle;
     private int height;
     private float x = 0 ;
     private float timing = 0.5f;
     private float currentTime = 0;
+    private static int MAX_H = 0;
+    private static int MAX_W = 0;
+    private static int[] plateaus;
 
-    public Projectile(String name, int velocity, int angle, int height) {
+    public Projectile(String name, float velocity, int angle, int height) {
         this.name = name;
         setVelocity(velocity);
         setAngle(angle);
         setHeight(height);
     }
 
-    public boolean moveUntilHit(int ground) {
-        x += (float) (velocity * timing * Math.cos(Math.toRadians(angle)));
+    public boolean moveUntilHit(int ground, boolean augment) {
+        x += (float) (velocity * timing * Math.cos(Math.toRadians(angle))) + (augment&&currentTime%1.5f==0?10:0);
         height -= (int) (velocity * timing * Math.sin(Math.toRadians(angle)) - (0.5 * 9.81 * Math.pow(timing, 2)));
         currentTime += timing;
-        return height <= ground;
+        return height <= plateaus[(int) (x/100)] || height >= MAX_H || x >= MAX_W;
     }
 
     public float distance(Projectile other) {
@@ -54,11 +57,11 @@ public class Projectile {
         this.timing = timing;
     }
 
-    public int getVelocity() {
+    public float getVelocity() {
         return velocity;
     }
 
-    public void setVelocity(int velocity) {
+    public void setVelocity(float velocity) {
         this.velocity = velocity;
     }
 
@@ -76,5 +79,29 @@ public class Projectile {
 
     public void setHeight(int height) {
         this.height = height;
+    }
+
+    public static int getMaxH() {
+        return MAX_H;
+    }
+
+    public static void setMaxH(int maxH) {
+        MAX_H = maxH;
+    }
+
+    public static int getMaxW() {
+        return MAX_W;
+    }
+
+    public static void setMaxW(int maxW) {
+        MAX_W = maxW;
+    }
+
+    public static int[] getPlateaus() {
+        return plateaus;
+    }
+
+    public static void setPlateaus(int[] plateaus) {
+        Projectile.plateaus = plateaus;
     }
 }
