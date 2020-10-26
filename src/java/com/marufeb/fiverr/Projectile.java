@@ -4,8 +4,7 @@ public abstract class Projectile {
     private final String name;
     private float velocity;
     private int angle;
-    private int height;
-    private int iHeight;
+    private float height;
     private float x = 0 ;
     private float timing = 0.5f;
     private float currentTime = 0;
@@ -17,15 +16,16 @@ public abstract class Projectile {
         this.name = name;
         setVelocity(velocity);
         setAngle(angle);
-        iHeight = height;
         setHeight(height);
     }
 
     public boolean moveUntilHit(boolean augment) {
         x += (float) (velocity * timing * Math.cos(Math.toRadians(angle))) + (augment&&currentTime%1.5f==0?10:0);
-        height -= (int) (velocity * timing * Math.sin(Math.toRadians(angle)) - (0.5 * 9.81 * Math.pow(timing, 2)));
+        if (height >= MAX_H || x >= MAX_W)
+            return true;
+        height -= Math.abs((velocity * timing * Math.sin(Math.toRadians(angle)) - (0.5 * 9.81 * Math.pow(timing, 2))));
         currentTime += timing;
-        return height <= plateaus[(int) (x/100)] || height >= MAX_H || x >= MAX_W;
+        return height <= plateaus[(int) (x/100)];
     }
 
     public float distance(Projectile other) {
@@ -79,7 +79,7 @@ public abstract class Projectile {
         this.angle = angle;
     }
 
-    public int getHeight() {
+    public float getHeight() {
         return height;
     }
 

@@ -24,14 +24,14 @@ public class Manager {
 
             System.out.println("----------------------------------------------------------\n");
             System.out.println("| INITIAL VELOCITY |   INITIAL ANGLE  |  INITIAL HEIGHT  |");
-            System.out.printf("\n| %10.2f m/s   |  %10d    |  %10d   |", projectiles[i].getVelocity(), projectiles[i].getAngle(),projectiles[i].getHeight());
+            System.out.printf("\n| %10.2f m/s   |  %10d    |  %10.2f   |", projectiles[i].getVelocity(), projectiles[i].getAngle(),projectiles[i].getHeight());
             System.out.println("\n----------------------------------------------------------\n");
 
             System.out.println("|\tX      |\tY\t|\tTIME\t|");
             do {
-                if (i == 1 && projectiles[0].distance(projectiles[1]) >= 7 && projectiles[0].distanceToTheGround() <=50 && projectiles[0].getHitPoint() < Projectile.getMaxW())
+                if (i == 0 && projectiles[0].distance(projectiles[1]) >= 7 && projectiles[0].distanceToTheGround() <=50 && projectiles[0].getHitPoint() < Projectile.getMaxW())
                     ((Hare) projectiles[0]).burnFuel();
-                System.out.printf("\n| %10.2f   |  %10d    |  %10.2f   |", projectiles[i].getX(),projectiles[i].getHeight(),projectiles[i].getCurrentTime());
+                System.out.printf("\n| %10.2f   |  %10.2f    |  %10.2f   |", projectiles[i].getX(),projectiles[i].getHeight(),projectiles[i].getCurrentTime());
             } while (!projectiles[i].moveUntilHit(i==0));
 
 
