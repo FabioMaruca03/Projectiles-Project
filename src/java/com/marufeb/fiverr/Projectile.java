@@ -5,6 +5,7 @@ public abstract class Projectile {
     private float velocity;
     private int angle;
     private int height;
+    private int iHeight;
     private float x = 0 ;
     private float timing = 0.5f;
     private float currentTime = 0;
@@ -16,10 +17,11 @@ public abstract class Projectile {
         this.name = name;
         setVelocity(velocity);
         setAngle(angle);
+        iHeight = height;
         setHeight(height);
     }
 
-    public boolean moveUntilHit(int ground, boolean augment) {
+    public boolean moveUntilHit(boolean augment) {
         x += (float) (velocity * timing * Math.cos(Math.toRadians(angle))) + (augment&&currentTime%1.5f==0?10:0);
         height -= (int) (velocity * timing * Math.sin(Math.toRadians(angle)) - (0.5 * 9.81 * Math.pow(timing, 2)));
         currentTime += timing;
@@ -28,6 +30,10 @@ public abstract class Projectile {
 
     public float distance(Projectile other) {
         return Math.abs(Math.max(other.getHitPoint(), getHitPoint()) - Math.min(other.getHitPoint(), getHitPoint()));
+    }
+
+    public float distanceToTheGround() {
+        return height-plateaus[(int) x/100];
     }
 
     //-----| GETTERS AND SETTERS |-----//

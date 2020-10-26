@@ -8,7 +8,4 @@ public class Hare extends Projectile{
     public void burnFuel() {
         super.setHeight(super.getHeight()+10);
     }
-
-
-
 }

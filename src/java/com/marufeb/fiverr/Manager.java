@@ -3,15 +3,14 @@ package com.marufeb.fiverr;
 import java.util.Random;
 
 public class Manager {
-    private Projectile[] projectiles;
-    private static Random randomizer = new Random(System.nanoTime());
+    private static final Random randomizer = new Random(System.nanoTime());
 
-    private void evaluate(int ground) {
-        projectiles = new Projectile[] {
+    private void evaluate() {
+        Projectile[] projectiles = new Projectile[]{
                 new Hare("HARE",
-                        randomizer.nextInt(50)+70,
+                        randomizer.nextInt(50) + 70,
                         randomizer.nextInt(90),
-                        randomizer.nextInt(600)+400
+                        randomizer.nextInt(600) + 400
                 ),
                 new Hound("HOUND",
                         11.3f,
@@ -21,23 +20,23 @@ public class Manager {
         };
 
         for (int i = 0; i < 2; i++) {
-            System.out.println("Projectile name: "+projectiles[i].getName());
+            System.out.println("\n\nProjectile name: "+projectiles[i].getName());
 
             System.out.println("----------------------------------------------------------\n");
             System.out.println("| INITIAL VELOCITY |   INITIAL ANGLE  |  INITIAL HEIGHT  |");
-            System.out.println("|\t"+projectiles[i].getVelocity()+" m/s\t|\t"+
-                    projectiles[i].getAngle()+"\t|\t"+projectiles[i].getHeight()+"\t|");
-            System.out.println("----------------------------------------------------------\n");
+            System.out.printf("\n| %10.2f m/s   |  %10d    |  %10d   |", projectiles[i].getVelocity(), projectiles[i].getAngle(),projectiles[i].getHeight());
+            System.out.println("\n----------------------------------------------------------\n");
 
-            System.out.println("|\tX\t|\tY\t|\tTIME\t|");
+            System.out.println("|\tX      |\tY\t|\tTIME\t|");
             do {
-                System.out.println("|\t"+projectiles[i].getX()+"\t|\t"+
-                        projectiles[i].getHeight()+"\t|\t"+projectiles[i].getCurrentTime());
+                if (i == 1 && projectiles[0].distance(projectiles[1]) >= 7 && projectiles[0].distanceToTheGround() <=50 && projectiles[0].getHitPoint() < Projectile.getMaxW())
+                    ((Hare) projectiles[0]).burnFuel();
+                System.out.printf("\n| %10.2f   |  %10d    |  %10.2f   |", projectiles[i].getX(),projectiles[i].getHeight(),projectiles[i].getCurrentTime());
+            } while (!projectiles[i].moveUntilHit(i==0));
 
-            } while (!projectiles[i].moveUntilHit(ground, i==0));
 
         }
-        System.out.println("Distance between projectiles: "+projectiles[0].distance(projectiles[1]));
+        System.out.println("\nDistance between projectiles: "+projectiles[0].distance(projectiles[1]));
         if (projectiles[0].distance(projectiles[1]) >= 7) {
             System.out.println("Hare won!");
         } else System.out.println("Hound won!");
@@ -52,8 +51,7 @@ public class Manager {
         Projectile.setPlateaus(plateaus);
 
         Manager m = new Manager();
-        m.evaluate(0);
-        m.evaluate(120);
+        m.evaluate();
     }
 
 }
